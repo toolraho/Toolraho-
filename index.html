@@ -1,432 +1,589 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Toolraho - Free Online Tools</title>
+<title>Toolraho - Free Online Tools</title>
 
-    <meta name="description"
-          content="Toolraho offers free, fast and easy-to-use online tools for PDF files, images and everyday tasks.">
+<meta name="description"
+content="Toolraho provides free, fast and simple online tools for PDF files, images, text and everyday digital tasks.">
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f6f8fc;
-            color: #172033;
-        }
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        header {
-            background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-        }
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#172033;
+}
 
-        .navbar {
-            max-width: 1150px;
-            margin: auto;
-            padding: 18px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* HEADER */
 
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            color: #2563eb;
-        }
+header{
+    background:#ffffff;
+    border-bottom:1px solid #e5e7eb;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
 
-        nav a {
-            text-decoration: none;
-            color: #374151;
-            margin-left: 24px;
-            font-size: 15px;
-        }
+.navbar{
+    max-width:1150px;
+    margin:auto;
+    padding:17px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-        nav a:hover {
-            color: #2563eb;
-        }
+.logo{
+    font-size:29px;
+    font-weight:900;
+    color:#2563eb;
+    letter-spacing:-1px;
+}
 
-        .hero {
-            background: #ffffff;
-            text-align: center;
-            padding: 75px 20px 65px;
-        }
+nav a{
+    text-decoration:none;
+    color:#374151;
+    margin-left:24px;
+    font-size:15px;
+    font-weight:600;
+}
 
-        .hero h1 {
-            font-size: 46px;
-            line-height: 1.15;
-            margin-bottom: 18px;
-        }
+nav a:hover{
+    color:#2563eb;
+}
 
-        .hero h1 span {
-            color: #2563eb;
-        }
+/* HERO */
 
-        .hero p {
-            max-width: 680px;
-            margin: auto;
-            color: #667085;
-            font-size: 18px;
-        }
+.hero{
+    background:linear-gradient(135deg,#ffffff,#eef5ff);
+    text-align:center;
+    padding:75px 20px 65px;
+}
 
-        .container {
-            max-width: 1150px;
-            margin: auto;
-            padding: 45px 20px;
-        }
+.hero h1{
+    font-size:48px;
+    line-height:1.15;
+    margin-bottom:18px;
+    font-weight:800;
+}
 
-        .search {
-            width: 100%;
-            padding: 17px 20px;
-            border: 1px solid #d9dee8;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            margin-bottom: 40px;
-        }
+.hero h1 span{
+    color:#2563eb;
+}
 
-        .search:focus {
-            border-color: #2563eb;
-        }
+.hero p{
+    max-width:700px;
+    margin:auto;
+    color:#667085;
+    font-size:18px;
+    line-height:1.6;
+}
 
-        .section-heading {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+/* MAIN */
 
-        .section-heading h2 {
-            font-size: 30px;
-            margin-bottom: 8px;
-        }
+.container{
+    max-width:1150px;
+    margin:auto;
+    padding:50px 20px;
+}
 
-        .section-heading p {
-            color: #667085;
-        }
+.search{
+    width:100%;
+    padding:18px 20px;
+    border:1px solid #d7dce5;
+    border-radius:14px;
+    font-size:16px;
+    outline:none;
+    background:#ffffff;
+    margin-bottom:45px;
+    box-shadow:0 5px 18px rgba(0,0,0,.04);
+}
 
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 22px;
-        }
+.search:focus{
+    border-color:#2563eb;
+}
 
-        .tool-card {
-            background: #ffffff;
-            border: 1px solid #e7eaf0;
-            border-radius: 16px;
-            padding: 30px 24px;
-            text-align: center;
-            transition: 0.2s;
-        }
+.section-heading{
+    text-align:center;
+    margin-bottom:32px;
+}
 
-        .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-        }
+.section-heading h2{
+    font-size:31px;
+    margin-bottom:8px;
+}
 
-        .icon {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
+.section-heading p{
+    color:#667085;
+}
 
-        .tool-card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+/* GRID */
 
-        .tool-card p {
-            color: #667085;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+.tools-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:24px;
+}
 
-        .button {
-            display: inline-block;
-            background: #2563eb;
-            color: white;
-            padding: 11px 22px;
-            border-radius: 9px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
+/* CARD */
 
-        .button:hover {
-            background: #1d4ed8;
-        }
+.tool-card{
+    background:#ffffff;
+    border:1px solid #e5e9f0;
+    border-radius:20px;
+    padding:30px 24px;
+    text-align:center;
 
-        .about {
-            background: #ffffff;
-            text-align: center;
-            padding: 55px 20px;
-            border-top: 1px solid #e5e7eb;
-        }
+    box-shadow:
+        0 8px 25px rgba(20,35,70,.07);
 
-        .about h2 {
-            font-size: 28px;
-            margin-bottom: 12px;
-        }
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
 
-        .about p {
-            max-width: 700px;
-            margin: auto;
-            color: #667085;
-        }
+.tool-card:hover{
+    transform:translateY(-7px);
 
-        footer {
-            background: #111827;
-            color: #9ca3af;
-            text-align: center;
-            padding: 28px 20px;
-            font-size: 14px;
-        }
+    box-shadow:
+        0 17px 38px rgba(20,35,70,.13);
+}
 
-        @media (max-width: 650px) {
+/* 3D ICON */
 
-            .navbar {
-                flex-direction: column;
-                gap: 15px;
-            }
+.icon-box{
+    width:82px;
+    height:82px;
 
-            nav a {
-                margin: 0 8px;
-            }
+    margin:0 auto 20px;
 
-            .hero {
-                padding: 55px 20px;
-            }
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-            .hero h1 {
-                font-size: 34px;
-            }
+    border-radius:23px;
 
-            .hero p {
-                font-size: 16px;
-            }
-        }
-    </style>
+    font-size:40px;
+
+    background:
+        linear-gradient(145deg,#ffffff,#dbe7ff);
+
+    box-shadow:
+        8px 8px 15px rgba(0,0,0,.14),
+        -6px -6px 13px rgba(255,255,255,.95);
+
+    transition:
+        transform .15s ease;
+}
+
+.tool-card:hover .icon-box{
+    transform:
+        translateY(-4px)
+        rotate(-3deg);
+}
+
+/* TITLE */
+
+.tool-card h3{
+    font-size:20px;
+    margin-bottom:10px;
+}
+
+.tool-card p{
+    color:#667085;
+    font-size:14px;
+    line-height:1.5;
+    min-height:45px;
+    margin-bottom:22px;
+}
+
+/* 3D BUTTON */
+
+.tool-button{
+    display:inline-block;
+
+    background:
+        linear-gradient(145deg,#3b82f6,#1d4ed8);
+
+    color:#ffffff;
+
+    padding:12px 22px;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    font-size:14px;
+    font-weight:700;
+
+    box-shadow:
+        0 5px 0 #153e9b,
+        0 9px 15px rgba(37,99,235,.25);
+
+    transition:
+        transform .1s ease,
+        box-shadow .1s ease;
+}
+
+/* BUTTON HOVER */
+
+.tool-button:hover{
+    filter:brightness(1.07);
+}
+
+/* REAL PRESS EFFECT */
+
+.tool-button:active{
+    transform:translateY(5px);
+
+    box-shadow:
+        0 0 0 #153e9b,
+        0 3px 7px rgba(37,99,235,.2);
+}
+
+/* ABOUT */
+
+.about{
+    background:#ffffff;
+    border-top:1px solid #e5e7eb;
+    padding:60px 20px;
+    text-align:center;
+}
+
+.about h2{
+    font-size:30px;
+    margin-bottom:14px;
+}
+
+.about p{
+    max-width:720px;
+    margin:auto;
+    color:#667085;
+    line-height:1.7;
+}
+
+/* FOOTER */
+
+footer{
+    background:#111827;
+    color:#9ca3af;
+    text-align:center;
+    padding:30px 20px;
+    font-size:14px;
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+    .navbar{
+        flex-direction:column;
+        gap:14px;
+    }
+
+    nav a{
+        margin:0 8px;
+    }
+
+    .hero{
+        padding:55px 20px;
+    }
+
+    .hero h1{
+        font-size:34px;
+    }
+
+    .hero p{
+        font-size:16px;
+    }
+
+    .tools-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- HEADER -->
+
 <header>
-    <div class="navbar">
 
-        <div class="logo">
-            Toolraho
-        </div>
+<div class="navbar">
 
-        <nav>
-            <a href="#">Home</a>
-            <a href="#tools">Tools</a>
-            <a href="#about">About</a>
-        </nav>
+<div class="logo">
+Toolraho
+</div>
 
-    </div>
+<nav>
+<a href="#">Home</a>
+<a href="#tools">Tools</a>
+<a href="#about">About</a>
+</nav>
+
+</div>
+
 </header>
 
 
+<!-- HERO -->
+
 <section class="hero">
 
-    <h1>
-        Free Online <span>Tools</span> for Everyone
-    </h1>
+<h1>
+Free Online <span>Tools</span> for Everyone
+</h1>
 
-    <p>
-        Compress images, work with PDF files and use simple online tools
-        quickly and easily.
-    </p>
+<p>
+Fast, simple and useful tools for PDF files,
+images, text and everyday digital tasks.
+</p>
 
 </section>
 
 
+<!-- TOOLS -->
+
 <main class="container" id="tools">
 
-    <input
-        type="text"
-        id="search"
-        class="search"
-        placeholder="Search for a tool..."
-        onkeyup="searchTools()"
-    >
+<input
+type="text"
+id="search"
+class="search"
+placeholder="Search for a tool..."
+onkeyup="searchTools()"
+>
+
+<div class="section-heading">
+
+<h2>
+Popular Tools
+</h2>
+
+<p>
+Choose a tool and get your task done quickly.
+</p>
+
+</div>
 
 
-    <div class="section-heading">
-
-        <h2>Popular Tools</h2>
-
-        <p>
-            Simple, fast and useful tools for your everyday needs.
-        </p>
-
-    </div>
+<div class="tools-grid">
 
 
-    <div class="tools-grid" id="toolsGrid">
+<!-- PDF -->
+
+<div class="tool-card">
+
+<div class="icon-box">
+📄
+</div>
+
+<h3>
+PDF Tools
+</h3>
+
+<p>
+Merge, split, compress and work with PDF files.
+</p>
+
+<a href="#" class="tool-button">
+Explore Tools
+</a>
+
+</div>
 
 
-        <div class="tool-card">
+<!-- IMAGE COMPRESSOR -->
 
-            <div class="icon">📄</div>
+<div class="tool-card">
 
-            <h3>PDF Tools</h3>
+<div class="icon-box">
+🖼️
+</div>
 
-            <p>
-                Work with PDF files using simple online tools.
-            </p>
+<h3>
+Image Compressor
+</h3>
 
-            <a href="#" class="button">
-                Explore Tools
-            </a>
+<p>
+Reduce image file size while keeping good quality.
+</p>
 
-        </div>
+<a href="#" class="tool-button">
+Compress Image
+</a>
 
-
-        <div class="tool-card">
-
-            <div class="icon">🖼️</div>
-
-            <h3>Image Compressor</h3>
-
-            <p>
-                Reduce image file size while keeping good quality.
-            </p>
-
-            <a href="#" class="button">
-                Compress Image
-            </a>
-
-        </div>
+</div>
 
 
-        <div class="tool-card">
+<!-- IMAGE RESIZER -->
 
-            <div class="icon">📐</div>
+<div class="tool-card">
 
-            <h3>Image Resizer</h3>
+<div class="icon-box">
+📐
+</div>
 
-            <p>
-                Resize your images to the dimensions you need.
-            </p>
+<h3>
+Image Resizer
+</h3>
 
-            <a href="#" class="button">
-                Resize Image
-            </a>
+<p>
+Resize images to the exact dimensions you need.
+</p>
 
-        </div>
+<a href="#" class="tool-button">
+Resize Image
+</a>
 
-
-        <div class="tool-card">
-
-            <div class="icon">🔄</div>
-
-            <h3>Image Converter</h3>
-
-            <p>
-                Convert images between popular file formats.
-            </p>
-
-            <a href="#" class="button">
-                Convert Image
-            </a>
-
-        </div>
+</div>
 
 
-        <div class="tool-card">
+<!-- IMAGE CONVERTER -->
 
-            <div class="icon">📝</div>
+<div class="tool-card">
 
-            <h3>Text Tools</h3>
+<div class="icon-box">
+🔄
+</div>
 
-            <p>
-                Useful tools for counting and working with text.
-            </p>
+<h3>
+Image Converter
+</h3>
 
-            <a href="#" class="button">
-                Explore Tools
-            </a>
+<p>
+Convert images between popular formats easily.
+</p>
 
-        </div>
+<a href="#" class="tool-button">
+Convert Image
+</a>
 
-
-        <div class="tool-card">
-
-            <div class="icon">📁</div>
-
-            <h3>File Tools</h3>
-
-            <p>
-                Simple tools for common file-related tasks.
-            </p>
-
-            <a href="#" class="button">
-                Explore Tools
-            </a>
-
-        </div>
+</div>
 
 
-    </div>
+<!-- TEXT TOOLS -->
+
+<div class="tool-card">
+
+<div class="icon-box">
+📝
+</div>
+
+<h3>
+Text Tools
+</h3>
+
+<p>
+Count words, characters and work with text.
+</p>
+
+<a href="#" class="tool-button">
+Explore Tools
+</a>
+
+</div>
+
+
+<!-- FILE TOOLS -->
+
+<div class="tool-card">
+
+<div class="icon-box">
+📁
+</div>
+
+<h3>
+File Tools
+</h3>
+
+<p>
+Useful tools for common file-related tasks.
+</p>
+
+<a href="#" class="tool-button">
+Explore Tools
+</a>
+
+</div>
+
+
+</div>
 
 </main>
 
 
+<!-- ABOUT -->
+
 <section class="about" id="about">
 
-    <h2>About Toolraho</h2>
+<h2>
+About Toolraho
+</h2>
 
-    <p>
-        Toolraho is a growing collection of free online tools designed
-        to make everyday digital tasks faster, easier and more convenient.
-    </p>
+<p>
+Toolraho is a growing collection of free online tools
+designed to make everyday digital tasks faster,
+easier and more convenient for everyone.
+</p>
 
 </section>
 
 
+<!-- FOOTER -->
+
 <footer>
 
-    © 2026 Toolraho. All rights reserved.
+© 2026 Toolraho. All rights reserved.
 
 </footer>
 
 
+<!-- SEARCH -->
+
 <script>
 
-    function searchTools() {
+function searchTools(){
 
-        const search =
-            document.getElementById("search")
-            .value
-            .toLowerCase();
+const searchText =
+document
+.getElementById("search")
+.value
+.toLowerCase();
 
-        const cards =
-            document.querySelectorAll(".tool-card");
+const cards =
+document.querySelectorAll(".tool-card");
 
-        cards.forEach(function(card) {
+cards.forEach(function(card){
 
-            const text =
-                card.innerText.toLowerCase();
+const text =
+card.innerText.toLowerCase();
 
-            if (text.includes(search)) {
+if(text.includes(searchText)){
 
-                card.style.display = "block";
+card.style.display="block";
 
-            } else {
+}else{
 
-                card.style.display = "none";
+card.style.display="none";
 
-            }
+}
 
-        });
+});
 
-    }
+}
 
 </script>
 
