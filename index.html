@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Toolraho - Free Online Tools</title>
-    <meta name="description" content="Toolraho provides simple, fast and free online tools for everyone.">
+
+    <meta name="description"
+          content="Toolraho offers free, fast and easy-to-use online tools for PDF files, images and everyday tasks.">
 
     <style>
         * {
@@ -16,20 +18,19 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
-            line-height: 1.6;
+            background: #f6f8fc;
+            color: #172033;
         }
 
         header {
-            background: #111827;
-            color: white;
-            padding: 22px 20px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .navbar {
-            max-width: 1100px;
+            max-width: 1150px;
             margin: auto;
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,159 +38,172 @@
 
         .logo {
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 800;
+            color: #2563eb;
         }
 
         nav a {
-            color: white;
             text-decoration: none;
-            margin-left: 20px;
+            color: #374151;
+            margin-left: 24px;
             font-size: 15px;
         }
 
         nav a:hover {
-            color: #60a5fa;
+            color: #2563eb;
         }
 
         .hero {
+            background: #ffffff;
             text-align: center;
-            padding: 65px 20px 45px;
-            background: white;
+            padding: 75px 20px 65px;
         }
 
         .hero h1 {
-            font-size: 42px;
-            margin-bottom: 12px;
+            font-size: 46px;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: #2563eb;
         }
 
         .hero p {
-            color: #6b7280;
-            font-size: 18px;
-            max-width: 650px;
+            max-width: 680px;
             margin: auto;
+            color: #667085;
+            font-size: 18px;
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1150px;
             margin: auto;
-            padding: 35px 20px;
+            padding: 45px 20px;
         }
 
-        .search-box {
+        .search {
             width: 100%;
-            padding: 16px 18px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
+            padding: 17px 20px;
+            border: 1px solid #d9dee8;
+            border-radius: 12px;
             font-size: 16px;
-            margin-bottom: 30px;
             outline: none;
+            margin-bottom: 40px;
         }
 
-        .search-box:focus {
+        .search:focus {
             border-color: #2563eb;
         }
 
-        .section-title {
+        .section-heading {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
-        .section-title h2 {
-            font-size: 28px;
-            margin-bottom: 5px;
+        .section-heading h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
         }
 
-        .section-title p {
-            color: #6b7280;
+        .section-heading p {
+            color: #667085;
         }
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 22px;
         }
 
         .tool-card {
-            background: white;
-            padding: 28px 22px;
-            border-radius: 14px;
+            background: #ffffff;
+            border: 1px solid #e7eaf0;
+            border-radius: 16px;
+            padding: 30px 24px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-            transition: transform 0.2s ease;
+            transition: 0.2s;
         }
 
         .tool-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
         }
 
-        .tool-icon {
-            font-size: 38px;
-            margin-bottom: 12px;
+        .icon {
+            font-size: 42px;
+            margin-bottom: 15px;
         }
 
         .tool-card h3 {
             font-size: 20px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .tool-card p {
-            color: #6b7280;
+            color: #667085;
             font-size: 14px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
-        .tool-button {
+        .button {
             display: inline-block;
             background: #2563eb;
             color: white;
+            padding: 11px 22px;
+            border-radius: 9px;
             text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
             font-size: 14px;
+            font-weight: 600;
         }
 
-        .tool-button:hover {
+        .button:hover {
             background: #1d4ed8;
         }
 
         .about {
-            background: white;
+            background: #ffffff;
             text-align: center;
-            padding: 45px 20px;
-            margin-top: 20px;
+            padding: 55px 20px;
+            border-top: 1px solid #e5e7eb;
         }
 
         .about h2 {
-            margin-bottom: 10px;
+            font-size: 28px;
+            margin-bottom: 12px;
         }
 
         .about p {
             max-width: 700px;
             margin: auto;
-            color: #6b7280;
+            color: #667085;
         }
 
         footer {
             background: #111827;
             color: #9ca3af;
             text-align: center;
-            padding: 25px 20px;
-            margin-top: 0;
+            padding: 28px 20px;
             font-size: 14px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 650px) {
+
             .navbar {
                 flex-direction: column;
-                gap: 12px;
+                gap: 15px;
             }
 
             nav a {
                 margin: 0 8px;
             }
 
+            .hero {
+                padding: 55px 20px;
+            }
+
             .hero h1 {
-                font-size: 32px;
+                font-size: 34px;
             }
 
             .hero p {
@@ -201,118 +215,220 @@
 
 <body>
 
-    <header>
-        <div class="navbar">
-            <div class="logo">Toolraho</div>
+<header>
+    <div class="navbar">
 
-            <nav>
-                <a href="#">Home</a>
-                <a href="#tools">Tools</a>
-                <a href="#about">About</a>
-            </nav>
+        <div class="logo">
+            Toolraho
         </div>
-    </header>
 
-    <section class="hero">
-        <h1>Simple Tools. Powerful Results.</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#tools">Tools</a>
+            <a href="#about">About</a>
+        </nav>
+
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <h1>
+        Free Online <span>Tools</span> for Everyone
+    </h1>
+
+    <p>
+        Compress images, work with PDF files and use simple online tools
+        quickly and easily.
+    </p>
+
+</section>
+
+
+<main class="container" id="tools">
+
+    <input
+        type="text"
+        id="search"
+        class="search"
+        placeholder="Search for a tool..."
+        onkeyup="searchTools()"
+    >
+
+
+    <div class="section-heading">
+
+        <h2>Popular Tools</h2>
+
         <p>
-            Free, fast and easy-to-use online tools for everyday tasks.
+            Simple, fast and useful tools for your everyday needs.
         </p>
-    </section>
 
-    <main class="container" id="tools">
+    </div>
 
-        <input
-            type="text"
-            id="searchBox"
-            class="search-box"
-            placeholder="Search for a tool..."
-            onkeyup="searchTools()"
-        >
 
-        <div class="section-title">
-            <h2>Popular Tools</h2>
-            <p>Choose a tool and get your task done quickly.</p>
+    <div class="tools-grid" id="toolsGrid">
+
+
+        <div class="tool-card">
+
+            <div class="icon">📄</div>
+
+            <h3>PDF Tools</h3>
+
+            <p>
+                Work with PDF files using simple online tools.
+            </p>
+
+            <a href="#" class="button">
+                Explore Tools
+            </a>
+
         </div>
 
-        <div class="tools-grid">
 
-            <div class="tool-card">
-                <div class="tool-icon">🧮</div>
-                <h3>Calculator</h3>
-                <p>Perform quick and simple calculations.</p>
-                <a href="#" class="tool-button">Use Tool</a>
-            </div>
+        <div class="tool-card">
 
-            <div class="tool-card">
-                <div class="tool-icon">🎂</div>
-                <h3>Age Calculator</h3>
-                <p>Calculate your exact age easily.</p>
-                <a href="#" class="tool-button">Use Tool</a>
-            </div>
+            <div class="icon">🖼️</div>
 
-            <div class="tool-card">
-                <div class="tool-icon">🔐</div>
-                <h3>Password Generator</h3>
-                <p>Create strong and secure passwords.</p>
-                <a href="#" class="tool-button">Use Tool</a>
-            </div>
+            <h3>Image Compressor</h3>
 
-            <div class="tool-card">
-                <div class="tool-icon">📝</div>
-                <h3>Text Counter</h3>
-                <p>Count words, characters and spaces.</p>
-                <a href="#" class="tool-button">Use Tool</a>
-            </div>
+            <p>
+                Reduce image file size while keeping good quality.
+            </p>
 
-            <div class="tool-card">
-                <div class="tool-icon">🔄</div>
-                <h3>Unit Converter</h3>
-                <p>Convert different units quickly and easily.</p>
-                <a href="#" class="tool-button">Use Tool</a>
-            </div>
-
-            <div class="tool-card">
-                <div class="tool-icon">📅</div>
-                <h3>Date Calculator</h3>
-                <p>Calculate the difference between dates.</p>
-                <a href="#" class="tool-button">Use Tool</a>
-            </div>
+            <a href="#" class="button">
+                Compress Image
+            </a>
 
         </div>
-    </main>
 
-    <section class="about" id="about">
-        <h2>About Toolraho</h2>
-        <p>
-            Toolraho is a collection of simple and useful online tools
-            designed to make everyday tasks faster and easier.
-        </p>
-    </section>
 
-    <footer>
-        © 2026 Toolraho. All rights reserved.
-    </footer>
+        <div class="tool-card">
 
-    <script>
-        function searchTools() {
-            const searchText =
-                document.getElementById("searchBox").value.toLowerCase();
+            <div class="icon">📐</div>
 
-            const tools =
-                document.querySelectorAll(".tool-card");
+            <h3>Image Resizer</h3>
 
-            tools.forEach(function(tool) {
-                const text = tool.innerText.toLowerCase();
+            <p>
+                Resize your images to the dimensions you need.
+            </p>
 
-                if (text.includes(searchText)) {
-                    tool.style.display = "block";
-                } else {
-                    tool.style.display = "none";
-                }
-            });
-        }
-    </script>
+            <a href="#" class="button">
+                Resize Image
+            </a>
+
+        </div>
+
+
+        <div class="tool-card">
+
+            <div class="icon">🔄</div>
+
+            <h3>Image Converter</h3>
+
+            <p>
+                Convert images between popular file formats.
+            </p>
+
+            <a href="#" class="button">
+                Convert Image
+            </a>
+
+        </div>
+
+
+        <div class="tool-card">
+
+            <div class="icon">📝</div>
+
+            <h3>Text Tools</h3>
+
+            <p>
+                Useful tools for counting and working with text.
+            </p>
+
+            <a href="#" class="button">
+                Explore Tools
+            </a>
+
+        </div>
+
+
+        <div class="tool-card">
+
+            <div class="icon">📁</div>
+
+            <h3>File Tools</h3>
+
+            <p>
+                Simple tools for common file-related tasks.
+            </p>
+
+            <a href="#" class="button">
+                Explore Tools
+            </a>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+<section class="about" id="about">
+
+    <h2>About Toolraho</h2>
+
+    <p>
+        Toolraho is a growing collection of free online tools designed
+        to make everyday digital tasks faster, easier and more convenient.
+    </p>
+
+</section>
+
+
+<footer>
+
+    © 2026 Toolraho. All rights reserved.
+
+</footer>
+
+
+<script>
+
+    function searchTools() {
+
+        const search =
+            document.getElementById("search")
+            .value
+            .toLowerCase();
+
+        const cards =
+            document.querySelectorAll(".tool-card");
+
+        cards.forEach(function(card) {
+
+            const text =
+                card.innerText.toLowerCase();
+
+            if (text.includes(search)) {
+
+                card.style.display = "block";
+
+            } else {
+
+                card.style.display = "none";
+
+            }
+
+        });
+
+    }
+
+</script>
 
 </body>
 </html>
