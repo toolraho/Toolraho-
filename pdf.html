@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Tools - Toolraho</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f8ff;
+  color:#102044;
+}
+header{
+  background:white;
+  padding:20px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  color:#1457d9;
+}
+nav a{
+  text-decoration:none;
+  color:#102044;
+  margin-left:25px;
+  font-weight:600;
+}
+.container{
+  max-width:1000px;
+  margin:40px auto;
+  padding:20px;
+}
+h1{
+  text-align:center;
+  font-size:40px;
+  margin-bottom:10px;
+}
+.subtitle{
+  text-align:center;
+  color:#65718b;
+  margin-bottom:35px;
+}
+.card{
+  background:white;
+  padding:30px;
+  margin-bottom:25px;
+  border-radius:18px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+.card h2{
+  margin-top:0;
+}
+input[type=file]{
+  width:100%;
+  padding:15px;
+  border:2px dashed #b7c5df;
+  border-radius:12px;
+  background:#f8faff;
+  margin:15px 0;
+}
+button{
+  border:0;
+  padding:14px 25px;
+  border-radius:10px;
+  background:#1769e0;
+  color:white;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{
+  opacity:.9;
+}
+button:disabled{
+  background:#9aa7bb;
+  cursor:not-allowed;
+}
+.status{
+  margin-top:15px;
+  color:#53627a;
+}
+footer{
+  text-align:center;
+  padding:30px;
+  background:#102c63;
+  color:white;
+  margin-top:50px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Toolraho</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="index.html">Tools</a>
+    <a href="index.html">About</a>
+  </nav>
+</header>
+
+<div class="container">
+
+<h1>PDF Tools</h1>
+<p class="subtitle">
+Create PDF files from images or merge multiple PDF files easily.
+</p>
+
+<div class="card">
+  <h2>🖼️ Images to PDF</h2>
+  <p>Select one or more JPG, PNG or WebP images and convert them into one PDF.</p>
+
+  <input id="imageFiles" type="file"
+         accept="image/jpeg,image/png,image/webp"
+         multiple>
+
+  <button id="imageBtn" onclick="imagesToPDF()">
+    Convert Images to PDF
+  </button>
+
+  <div id="imageStatus" class="status"></div>
+</div>
+
+<div class="card">
+  <h2>📄 Merge PDF Files</h2>
+  <p>Select multiple PDF files and combine them into one PDF.</p>
+
+  <input id="pdfFiles" type="file"
+         accept="application/pdf"
+         multiple>
+
+  <button id="mergeBtn" onclick="mergePDFs()">
+    Merge PDFs
+  </button>
+
+  <div id="pdfStatus" class="status"></div>
+</div>
+
+</div>
+
+<footer>
+  © 2026 Toolraho. All rights reserved.
+</footer>
+
+<script>
+
+async function imagesToPDF(){
+
+  const input = document.getElementById("imageFiles");
+  const status = document.getElementById("imageStatus");
+  const button = document.getElementById("imageBtn");
+
+  if(!input.files.length){
+    status.textContent = "Please select at least one image.";
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = "Creating PDF...";
+
+  try{
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf = new jsPDF("p","mm","a4");
+
+    for(let i=0; i<input.files.length; i++){
+
+      const file = input.files[i];
+
+      const imageURL = URL.createObjectURL(file);
+
+      const img = new Image();
+
+      await new Promise((resolve,reject)=>{
+
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = imageURL;
+
+      });
+
+      const pageWidth = 210;
+      const pageHeight = 297;
+
+      const margin = 10;
+
+      const maxWidth = pageWidth - margin*2;
+      const maxHeight = pageHeight - margin*2;
+
+      let width = img.width;
+      let height = img.height;
+
+      const ratio = Math.min(
+        maxWidth / width,
+        maxHeight / height
+      );
+
+      width *= ratio;
+      height *= ratio;
+
+      if(i > 0){
+        pdf.addPage();
+      }
+
+      const x = (pageWidth - width) / 2;
+      const y = (pageHeight - height) / 2;
+
+      let format = "JPEG";
+
+      if(file.type === "image/png"){
+        format = "PNG";
+      }
+
+      pdf.addImage(
+        img,
+        format,
+        x,
+        y,
+        width,
+        height
+      );
+
+      URL.revokeObjectURL(imageURL);
+    }
+
+    pdf.save("toolraho-images.pdf");
+
+    status.textContent = "PDF created successfully!";
+
+  }catch(error){
+
+    console.error(error);
+    status.textContent = "Something went wrong. Please try again.";
+
+  }
+
+  button.disabled = false;
+}
+
+
+async function mergePDFs(){
+
+  const input = document.getElementById("pdfFiles");
+  const status = document.getElementById("pdfStatus");
+  const button = document.getElementById("mergeBtn");
+
+  if(input.files.length < 2){
+    status.textContent = "Please select at least 2 PDF files.";
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = "Merging PDFs...";
+
+  try{
+
+    const { PDFDocument } = PDFLib;
+
+    const mergedPdf = await PDFDocument.create();
+
+    for(const file of input.files){
+
+      const bytes = await file.arrayBuffer();
+
+      const pdf = await PDFDocument.load(bytes);
+
+      const pages = await mergedPdf.copyPages(
+        pdf,
+        pdf.getPageIndices()
+      );
+
+      pages.forEach(page=>{
+        mergedPdf.addPage(page);
+      });
+
+    }
+
+    const mergedBytes = await mergedPdf.save();
+
+    const blob = new Blob(
+      [mergedBytes],
+      {type:"application/pdf"}
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "toolraho-merged.pdf";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+    status.textContent = "PDFs merged successfully!";
+
+  }catch(error){
+
+    console.error(error);
+    status.textContent =
+      "Could not merge the PDFs. Please check the files.";
+
+  }
+
+  button.disabled = false;
+}
+
+</script>
+
+</body>
+</html>
