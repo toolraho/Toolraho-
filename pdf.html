@@ -3,391 +3,2877 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Tools - Toolraho</title>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
-<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<title>Toolraho - PDF Tools</title>
+
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<!-- PDF-LIB -->
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<!-- JSZip -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<!-- SheetJS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<!-- DOCX -->
+<script src="https://cdn.jsdelivr.net/npm/docx@9.7.1/dist/index.umd.cjs"></script>
+
+<!-- Tesseract OCR -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
+
 body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f5f8ff;
-  color:#102044;
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f7fb;
+    color:#102044;
 }
+
 header{
-  background:white;
-  padding:20px 6%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+    background:white;
+    padding:16px 6%;
+    border-bottom:1px solid #ddd;
+    position:sticky;
+    top:0;
+    z-index:10;
 }
+
 .logo{
-  font-size:28px;
-  font-weight:bold;
-  color:#1457d9;
+    font-size:26px;
+    font-weight:800;
+    color:#1769e0;
 }
-nav a{
-  text-decoration:none;
-  color:#102044;
-  margin-left:25px;
-  font-weight:600;
-}
+
 .container{
-  max-width:1000px;
-  margin:40px auto;
-  padding:20px;
+    max-width:1100px;
+    margin:auto;
+    padding:25px 15px;
 }
+
 h1{
-  text-align:center;
-  font-size:40px;
-  margin-bottom:10px;
+    margin:5px 0;
+    font-size:30px;
 }
+
 .subtitle{
-  text-align:center;
-  color:#65718b;
-  margin-bottom:35px;
+    color:#657080;
+    margin-bottom:25px;
 }
+
+.grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(290px,1fr));
+    gap:18px;
+}
+
 .card{
-  background:white;
-  padding:30px;
-  margin-bottom:25px;
-  border-radius:18px;
-  box-shadow:0 5px 20px rgba(0,0,0,.08);
+    background:white;
+    border:1px solid #dde5ef;
+    border-radius:15px;
+    padding:18px;
+    box-shadow:0 3px 12px rgba(16,32,68,.08);
 }
+
 .card h2{
-  margin-top:0;
+    margin:0 0 8px;
+    font-size:19px;
 }
-input[type=file]{
-  width:100%;
-  padding:15px;
-  border:2px dashed #b7c5df;
-  border-radius:12px;
-  background:#f8faff;
-  margin:15px 0;
+
+.card p{
+    color:#657080;
+    line-height:1.5;
 }
+
+input,
+select{
+    width:100%;
+    padding:11px;
+    margin:6px 0;
+    border:1px solid #cbd5e1;
+    border-radius:9px;
+    font-size:15px;
+    background:white;
+}
+
 button{
-  border:0;
-  padding:14px 25px;
-  border-radius:10px;
-  background:#1769e0;
-  color:white;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
+    width:100%;
+    border:0;
+    border-radius:9px;
+    padding:13px 15px;
+    background:#1769e0;
+    color:white;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:7px;
 }
+
 button:hover{
-  opacity:.9;
+    opacity:.92;
 }
+
 button:disabled{
-  background:#9aa7bb;
-  cursor:not-allowed;
+    background:#9aa7bb;
+    cursor:not-allowed;
 }
+
+.danger{
+    background:#d93025;
+}
+
 .status{
-  margin-top:15px;
-  color:#53627a;
+    margin-top:10px;
+    padding:10px;
+    border-radius:8px;
+    background:#f1f5f9;
+    min-height:20px;
+    white-space:pre-wrap;
+    line-height:1.4;
 }
+
+.ok{
+    background:#eaf7ef;
+    color:#176b37;
+}
+
+.err{
+    background:#fff0ef;
+    color:#a51d14;
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.preview{
+    display:grid;
+    grid-template-columns:
+    repeat(3,1fr);
+    gap:8px;
+    margin-top:10px;
+}
+
+.preview img{
+    width:100%;
+    border-radius:7px;
+    border:1px solid #ddd;
+}
+
+.note{
+    margin-top:20px;
+}
+
+.small{
+    font-size:13px;
+    color:#657080;
+}
+
 footer{
-  text-align:center;
-  padding:30px;
-  background:#102c63;
-  color:white;
-  margin-top:50px;
+    text-align:center;
+    color:#657080;
+    padding:35px 15px;
 }
+
+@media(max-width:600px){
+
+    h1{
+        font-size:25px;
+    }
+
+    .row{
+        grid-template-columns:1fr;
+    }
+
+    .preview{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">Toolraho</div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="index.html">Tools</a>
-    <a href="index.html">About</a>
-  </nav>
+    <div class="logo">Toolraho</div>
 </header>
 
 <div class="container">
 
 <h1>PDF Tools</h1>
+
 <p class="subtitle">
-Create PDF files from images or merge multiple PDF files easily.
+Free online PDF tools. Files are processed directly in your browser.
 </p>
 
-<div class="card">
-  <h2>🖼️ Images to PDF</h2>
-  <p>Select one or more JPG, PNG or WebP images and convert them into one PDF.</p>
+<div class="grid">
 
-  <input id="imageFiles" type="file"
-         accept="image/jpeg,image/png,image/webp"
-         multiple>
+<!-- ===================================================== -->
+<!-- IMAGES TO PDF -->
+<!-- ===================================================== -->
 
-  <button id="imageBtn" onclick="imagesToPDF()">
-    Convert Images to PDF
-  </button>
+<section class="card">
 
-  <div id="imageStatus" class="status"></div>
+<h2>🖼️ Images → PDF</h2>
+
+<p>
+Convert JPG, PNG or WebP images into one PDF file.
+</p>
+
+<input
+    id="imageFiles"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+    multiple
+>
+
+<button id="imageBtn">
+Convert Images to PDF
+</button>
+
+<div id="imageStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- MERGE PDF -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>📄 Merge PDF</h2>
+
+<p>
+Combine multiple PDF files into one PDF.
+</p>
+
+<input
+    id="mergeFiles"
+    type="file"
+    accept="application/pdf"
+    multiple
+>
+
+<button id="mergeBtn">
+Merge PDF Files
+</button>
+
+<div id="mergeStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- SPLIT PDF -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>✂️ Split / Extract PDF</h2>
+
+<p>
+Extract a selected page range from a PDF.
+</p>
+
+<input
+    id="splitFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<div class="row">
+
+<input
+    id="startPage"
+    type="number"
+    min="1"
+    placeholder="Start page"
+>
+
+<input
+    id="endPage"
+    type="number"
+    min="1"
+    placeholder="End page"
+>
+
 </div>
 
-<div class="card">
-  <h2>📄 Merge PDF Files</h2>
-  <p>Select multiple PDF files and combine them into one PDF.</p>
+<button id="splitBtn">
+Extract Pages
+</button>
 
-  <input id="pdfFiles" type="file"
-         accept="application/pdf"
-         multiple>
+<div id="splitStatus" class="status"></div>
 
-  <button id="mergeBtn" onclick="mergePDFs()">
-    Merge PDFs
-  </button>
+</section>
 
-  <div id="pdfStatus" class="status"></div>
+
+<!-- ===================================================== -->
+<!-- PDF TO IMAGES -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>🖼️ PDF → Images</h2>
+
+<p>
+Convert every PDF page into PNG or JPG images.
+</p>
+
+<input
+    id="pdfImageFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<div class="row">
+
+<input
+    id="imageScale"
+    type="number"
+    value="1.5"
+    min="0.5"
+    max="3"
+    step="0.1"
+>
+
+<select id="imageType">
+
+<option value="png">
+PNG
+</option>
+
+<option value="jpeg">
+JPG
+</option>
+
+</select>
+
+</div>
+
+<button id="pdfImageBtn">
+PDF to Images
+</button>
+
+<div id="pdfImageStatus" class="status"></div>
+
+<div id="imagePreview" class="preview"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- PDF TO IMAGES TO PDF -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>🔄 PDF → Images → PDF</h2>
+
+<p>
+Convert PDF pages to images and rebuild them into a new PDF.
+</p>
+
+<input
+    id="roundTripFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<div class="row">
+
+<input
+    id="roundTripScale"
+    type="number"
+    value="1.5"
+    min="0.7"
+    max="3"
+    step="0.1"
+>
+
+<select id="roundTripFormat">
+
+<option value="png">
+PNG
+</option>
+
+<option value="jpeg">
+JPG
+</option>
+
+</select>
+
+</div>
+
+<button id="roundTripBtn">
+Convert PDF → Images → PDF
+</button>
+
+<div id="roundTripStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- PDF TO WORD -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>📝 PDF → Word</h2>
+
+<p>
+Extract selectable PDF text and create a DOCX Word file.
+</p>
+
+<input
+    id="wordFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<label class="small">
+
+<input
+    id="wordOCR"
+    type="checkbox"
+    style="width:auto"
+>
+
+Use OCR for scanned pages
+
+</label>
+
+<select id="ocrLanguage">
+
+<option value="eng">
+English OCR
+</option>
+
+<option value="urd">
+Urdu OCR
+</option>
+
+<option value="eng+urd">
+English + Urdu OCR
+</option>
+
+</select>
+
+<button id="wordBtn">
+Convert PDF to Word
+</button>
+
+<div id="wordStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- PDF TO EXCEL -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>📊 PDF → Excel</h2>
+
+<p>
+Extract PDF text into an Excel XLSX file.
+</p>
+
+<input
+    id="excelFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<button id="excelBtn">
+Convert PDF to Excel
+</button>
+
+<div id="excelStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- PDF TO TEXT -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>📋 PDF → Text</h2>
+
+<p>
+Extract selectable PDF text and download TXT.
+</p>
+
+<input
+    id="textFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<button id="textBtn">
+Extract Text
+</button>
+
+<div id="textStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- ROTATE PDF -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>🔄 Rotate PDF</h2>
+
+<p>
+Rotate all pages of a PDF.
+</p>
+
+<input
+    id="rotateFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<select id="rotateAngle">
+
+<option value="90">
+90°
+</option>
+
+<option value="180">
+180°
+</option>
+
+<option value="270">
+270°
+</option>
+
+</select>
+
+<button id="rotateBtn">
+Rotate PDF
+</button>
+
+<div id="rotateStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- DELETE PAGES -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>🗑️ Delete PDF Pages</h2>
+
+<p>
+Delete pages. Example: 2,4,7-9
+</p>
+
+<input
+    id="deleteFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<input
+    id="deletePages"
+    type="text"
+    placeholder="Example: 2,4,7-9"
+>
+
+<button id="deleteBtn" class="danger">
+Delete Pages
+</button>
+
+<div id="deleteStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- REORDER PDF -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>↕️ Reorder PDF Pages</h2>
+
+<p>
+Reorder pages. Example: 3,1,2,4
+</p>
+
+<input
+    id="orderFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<input
+    id="pageOrder"
+    type="text"
+    placeholder="Example: 3,1,2,4"
+>
+
+<button id="orderBtn">
+Reorder PDF
+</button>
+
+<div id="orderStatus" class="status"></div>
+
+</section>
+
+
+<!-- ===================================================== -->
+<!-- WATERMARK -->
+<!-- ===================================================== -->
+
+<section class="card">
+
+<h2>💧 Watermark PDF</h2>
+
+<p>
+Add a text watermark to every page.
+</p>
+
+<input
+    id="watermarkFile"
+    type="file"
+    accept="application/pdf"
+>
+
+<input
+    id="watermarkText"
+    type="text"
+    placeholder="Watermark text"
+>
+
+<div class="row">
+
+<input
+    id="watermarkSize"
+    type="number"
+    value="36"
+    min="10"
+    max="100"
+>
+
+<select id="watermarkOpacity">
+
+<option value="0.15">
+Light
+</option>
+
+<option value="0.25" selected>
+Medium
+</option>
+
+<option value="0.40">
+Dark
+</option>
+
+</select>
+
+</div>
+
+<button id="watermarkBtn">
+Add Watermark
+</button>
+
+<div id="watermarkStatus" class="status"></div>
+
+</section>
+
+</div>
+
+
+<!-- ===================================================== -->
+
+<div class="card note">
+
+<h2>ℹ️ Important</h2>
+
+<p class="small">
+
+PDF to Word and PDF to Excel work best with selectable text.
+Scanned documents require OCR.
+
+OCR can take longer, especially for large PDFs.
+Complex tables and original document layouts may not always
+match the original document exactly.
+
+All normal PDF processing is performed inside the browser.
+
+</p>
+
 </div>
 
 </div>
-<div class="card">
-  <h2>✂️ Split PDF</h2>
-  <p>Select a PDF and choose the page range you want to extract.</p>
 
-  <input id="splitFile" type="file" accept="application/pdf">
 
-  <input id="startPage" type="number" min="1" placeholder="Start page">
-  <input id="endPage" type="number" min="1" placeholder="End page">
-
-  <button id="splitBtn">Split PDF</button>
-
-  <div id="splitStatus" class="status"></div>
-</div>
-
-<script>
-document.getElementById("splitBtn").onclick = async function () {
-  const file = document.getElementById("splitFile").files[0];
-  const start = parseInt(document.getElementById("startPage").value);
-  const end = parseInt(document.getElementById("endPage").value);
-  const status = document.getElementById("splitStatus");
-
-  if (!file || !start || !end) {
-    status.textContent = "Please select a PDF and enter page numbers.";
-    return;
-  }
-
-  if (start > end) {
-    status.textContent = "Start page must be smaller than end page.";
-    return;
-  }
-
-  try {
-    const bytes = await file.arrayBuffer();
-    const sourcePdf = await PDFLib.PDFDocument.load(bytes);
-    const newPdf = await PDFLib.PDFDocument.create();
-
-    const totalPages = sourcePdf.getPageCount();
-
-    if (start < 1 || end > totalPages) {
-      status.textContent = "Page number is outside the PDF range.";
-      return;
-    }
-
-    const pages = await newPdf.copyPages(
-      sourcePdf,
-      Array.from({length: end - start + 1}, (_, i) => start - 1 + i)
-    );
-
-    pages.forEach(page => newPdf.addPage(page));
-
-    const pdfBytes = await newPdf.save();
-
-    const blob = new Blob([pdfBytes], {type: "application/pdf"});
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "split-pages.pdf";
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    status.textContent = "PDF split successfully!";
-  } catch (error) {
-    status.textContent = "Error: " + error.message;
-  }
-};
-</script>
 <footer>
-  © 2026 Toolraho. All rights reserved.
+
+© 2026 Toolraho. All rights reserved.
+
 </footer>
 
+
 <script>
 
-async function imagesToPDF(){
+"use strict";
 
-  const input = document.getElementById("imageFiles");
-  const status = document.getElementById("imageStatus");
-  const button = document.getElementById("imageBtn");
 
-  if(!input.files.length){
-    status.textContent = "Please select at least one image.";
-    return;
-  }
+/* =========================================================
+   PDF.JS WORKER
+========================================================= */
 
-  button.disabled = true;
-  status.textContent = "Creating PDF...";
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-  try{
 
-    const { jsPDF } = window.jspdf;
+/* =========================================================
+   LIBRARIES
+========================================================= */
 
-    const pdf = new jsPDF("p","mm","a4");
+const PDFDocument = PDFLib.PDFDocument;
+const degrees = PDFLib.degrees;
+const rgb = PDFLib.rgb;
+const StandardFonts = PDFLib.StandardFonts;
 
-    for(let i=0; i<input.files.length; i++){
 
-      const file = input.files[i];
+/* =========================================================
+   HELPER FUNCTIONS
+========================================================= */
 
-      const imageURL = URL.createObjectURL(file);
+function $(id){
 
-      const img = new Image();
+    return document.getElementById(id);
 
-      await new Promise((resolve,reject)=>{
-
-        img.onload = resolve;
-        img.onerror = reject;
-        img.src = imageURL;
-
-      });
-
-      const pageWidth = 210;
-      const pageHeight = 297;
-
-      const margin = 10;
-
-      const maxWidth = pageWidth - margin*2;
-      const maxHeight = pageHeight - margin*2;
-
-      let width = img.width;
-      let height = img.height;
-
-      const ratio = Math.min(
-        maxWidth / width,
-        maxHeight / height
-      );
-
-      width *= ratio;
-      height *= ratio;
-
-      if(i > 0){
-        pdf.addPage();
-      }
-
-      const x = (pageWidth - width) / 2;
-      const y = (pageHeight - height) / 2;
-
-      let format = "JPEG";
-
-      if(file.type === "image/png"){
-        format = "PNG";
-      }
-
-      pdf.addImage(
-        img,
-        format,
-        x,
-        y,
-        width,
-        height
-      );
-
-      URL.revokeObjectURL(imageURL);
-    }
-
-    pdf.save("toolraho-images.pdf");
-
-    status.textContent = "PDF created successfully!";
-
-  }catch(error){
-
-    console.error(error);
-    status.textContent = "Something went wrong. Please try again.";
-
-  }
-
-  button.disabled = false;
 }
 
 
-async function mergePDFs(){
+function setStatus(id,message,type=""){
 
-  const input = document.getElementById("pdfFiles");
-  const status = document.getElementById("pdfStatus");
-  const button = document.getElementById("mergeBtn");
+    const el = $(id);
 
-  if(input.files.length < 2){
-    status.textContent = "Please select at least 2 PDF files.";
-    return;
-  }
+    el.textContent = message;
 
-  button.disabled = true;
-  status.textContent = "Merging PDFs...";
+    el.className = "status " + type;
 
-  try{
+}
 
-    const { PDFDocument } = PDFLib;
 
-    const mergedPdf = await PDFDocument.create();
+function getFile(id,statusId){
 
-    for(const file of input.files){
+    const input = $(id);
 
-      const bytes = await file.arrayBuffer();
+    if(!input.files || !input.files.length){
 
-      const pdf = await PDFDocument.load(bytes);
+        setStatus(
+            statusId,
+            "Please select a file.",
+            "err"
+        );
 
-      const pages = await mergedPdf.copyPages(
-        pdf,
-        pdf.getPageIndices()
-      );
-
-      pages.forEach(page=>{
-        mergedPdf.addPage(page);
-      });
+        return null;
 
     }
 
-    const mergedBytes = await mergedPdf.save();
+    return input.files[0];
 
-    const blob = new Blob(
-      [mergedBytes],
-      {type:"application/pdf"}
+}
+
+
+function safeName(filename){
+
+    return (
+        (filename || "file")
+        .replace(/\.[^/.]+$/,"")
+        .replace(/[^a-zA-Z0-9_-]+/g,"-")
+    ) || "file";
+
+}
+
+
+function downloadBlob(blob,filename){
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download = filename;
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    setTimeout(
+        () => URL.revokeObjectURL(url),
+        1500
     );
 
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.download = "toolraho-merged.pdf";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    link.remove();
-
-    URL.revokeObjectURL(url);
-
-    status.textContent = "PDFs merged successfully!";
-
-  }catch(error){
-
-    console.error(error);
-    status.textContent =
-      "Could not merge the PDFs. Please check the files.";
-
-  }
-
-  button.disabled = false;
 }
+
+
+async function loadPDFLib(file){
+
+    return await PDFDocument.load(
+        await file.arrayBuffer()
+    );
+
+}
+
+
+async function loadPDFJS(file){
+
+    const data =
+        new Uint8Array(
+            await file.arrayBuffer()
+        );
+
+    return await pdfjsLib
+        .getDocument({data})
+        .promise;
+
+}
+
+
+function parsePages(text){
+
+    const result =
+        new Set();
+
+    String(text || "")
+    .split(",")
+    .forEach(part => {
+
+        part = part.trim();
+
+        if(!part){
+            return;
+        }
+
+        if(part.includes("-")){
+
+            const pieces =
+                part.split("-")
+                .map(Number);
+
+            const start =
+                Math.min(pieces[0],pieces[1]);
+
+            const end =
+                Math.max(pieces[0],pieces[1]);
+
+            if(
+                Number.isInteger(start) &&
+                Number.isInteger(end)
+            ){
+
+                for(
+                    let i=start;
+                    i<=end;
+                    i++
+                ){
+
+                    result.add(i);
+
+                }
+
+            }
+
+        }else{
+
+            const number =
+                Number(part);
+
+            if(Number.isInteger(number)){
+
+                result.add(number);
+
+            }
+
+        }
+
+    });
+
+    return [...result].sort(
+        (a,b) => a-b
+    );
+
+}
+
+
+/* =========================================================
+   IMAGES → PDF
+========================================================= */
+
+$("imageBtn").onclick =
+async function(){
+
+    const files =
+        [...$("imageFiles").files];
+
+    if(!files.length){
+
+        setStatus(
+            "imageStatus",
+            "Please select one or more images.",
+            "err"
+        );
+
+        return;
+
+    }
+
+    $("imageBtn").disabled = true;
+
+    try{
+
+        const pdf =
+            await PDFDocument.create();
+
+        for(
+            let i=0;
+            i<files.length;
+            i++
+        ){
+
+            const file = files[i];
+
+            setStatus(
+                "imageStatus",
+                `Processing image ${i+1} of ${files.length}...`
+            );
+
+            const dataURL =
+                await new Promise(
+                    (resolve,reject) => {
+
+                        const reader =
+                            new FileReader();
+
+                        reader.onload =
+                            () => resolve(
+                                reader.result
+                            );
+
+                        reader.onerror =
+                            reject;
+
+                        reader.readAsDataURL(file);
+
+                    }
+                );
+
+
+            let image;
+
+            if(
+                file.type === "image/png"
+            ){
+
+                image =
+                    await pdf.embedPng(
+                        dataURL
+                    );
+
+            }else{
+
+                image =
+                    await pdf.embedJpg(
+                        dataURL
+                    );
+
+            }
+
+
+            const img =
+                await new Promise(
+                    (resolve,reject) => {
+
+                        const temp =
+                            new Image();
+
+                        temp.onload =
+                            () => resolve(temp);
+
+                        temp.onerror =
+                            reject;
+
+                        temp.src =
+                            dataURL;
+
+                    }
+                );
+
+
+            const maxWidth = 555;
+            const maxHeight = 800;
+
+            const scale =
+                Math.min(
+                    maxWidth / img.naturalWidth,
+                    maxHeight / img.naturalHeight,
+                    1
+                );
+
+
+            const width =
+                img.naturalWidth * scale;
+
+            const height =
+                img.naturalHeight * scale;
+
+
+            const page =
+                pdf.addPage([
+                    width + 40,
+                    height + 40
+                ]);
+
+
+            page.drawImage(
+                image,
+                {
+                    x:20,
+                    y:20,
+                    width,
+                    height
+                }
+            );
+
+        }
+
+
+        const bytes =
+            await pdf.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            "images-to-pdf.pdf"
+        );
+
+
+        setStatus(
+            "imageStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "imageStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("imageBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   MERGE PDF
+========================================================= */
+
+$("mergeBtn").onclick =
+async function(){
+
+    const files =
+        [...$("mergeFiles").files];
+
+    if(files.length < 2){
+
+        setStatus(
+            "mergeStatus",
+            "Please select at least 2 PDF files.",
+            "err"
+        );
+
+        return;
+
+    }
+
+    $("mergeBtn").disabled = true;
+
+    try{
+
+        const output =
+            await PDFDocument.create();
+
+
+        for(
+            let i=0;
+            i<files.length;
+            i++
+        ){
+
+            setStatus(
+                "mergeStatus",
+                `Merging PDF ${i+1} of ${files.length}...`
+            );
+
+
+            const source =
+                await loadPDFLib(files[i]);
+
+
+            const pages =
+                await output.copyPages(
+                    source,
+                    source.getPageIndices()
+                );
+
+
+            pages.forEach(
+                page => output.addPage(page)
+            );
+
+        }
+
+
+        const bytes =
+            await output.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            "merged.pdf"
+        );
+
+
+        setStatus(
+            "mergeStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "mergeStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("mergeBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   SPLIT PDF
+========================================================= */
+
+$("splitBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "splitFile",
+            "splitStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    const start =
+        parseInt(
+            $("startPage").value,
+            10
+        );
+
+    const end =
+        parseInt(
+            $("endPage").value,
+            10
+        );
+
+
+    if(
+        !Number.isInteger(start) ||
+        !Number.isInteger(end) ||
+        start < 1 ||
+        end < start
+    ){
+
+        setStatus(
+            "splitStatus",
+            "Please enter a valid start and end page.",
+            "err"
+        );
+
+        return;
+
+    }
+
+
+    $("splitBtn").disabled = true;
+
+    try{
+
+        const source =
+            await loadPDFLib(file);
+
+        const total =
+            source.getPageCount();
+
+
+        if(end > total){
+
+            setStatus(
+                "splitStatus",
+                `This PDF has ${total} pages.`,
+                "err"
+            );
+
+            return;
+
+        }
+
+
+        const output =
+            await PDFDocument.create();
+
+
+        const indexes =
+            Array.from(
+                {length:end-start+1},
+                (_,i) => start+i-1
+            );
+
+
+        const pages =
+            await output.copyPages(
+                source,
+                indexes
+            );
+
+
+        pages.forEach(
+            page => output.addPage(page)
+        );
+
+
+        const bytes =
+            await output.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            `${safeName(file.name)}-${start}-${end}.pdf`
+        );
+
+
+        setStatus(
+            "splitStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "splitStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("splitBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   PDF → IMAGES
+========================================================= */
+
+$("pdfImageBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "pdfImageFile",
+            "pdfImageStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    $("pdfImageBtn").disabled = true;
+
+    $("imagePreview").innerHTML = "";
+
+
+    try{
+
+        const pdf =
+            await loadPDFJS(file);
+
+
+        const zip =
+            new JSZip();
+
+
+        let scale =
+            parseFloat(
+                $("imageScale").value
+            );
+
+
+        if(
+            !Number.isFinite(scale) ||
+            scale < .5
+        ){
+
+            scale = 1.5;
+
+        }
+
+
+        scale =
+            Math.min(
+                scale,
+                3
+            );
+
+
+        const type =
+            $("imageType").value;
+
+
+        for(
+            let pageNumber=1;
+            pageNumber<=pdf.numPages;
+            pageNumber++
+        ){
+
+            setStatus(
+                "pdfImageStatus",
+                `Rendering page ${pageNumber} of ${pdf.numPages}...`
+            );
+
+
+            const page =
+                await pdf.getPage(
+                    pageNumber
+                );
+
+
+            const viewport =
+                page.getViewport({
+                    scale
+                });
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            canvas.width =
+                Math.ceil(
+                    viewport.width
+                );
+
+            canvas.height =
+                Math.ceil(
+                    viewport.height
+                );
+
+
+            const context =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+            await page.render({
+                canvasContext:context,
+                viewport
+            }).promise;
+
+
+            const mime =
+                type === "jpeg"
+                ? "image/jpeg"
+                : "image/png";
+
+
+            const blob =
+                await new Promise(
+                    resolve =>
+                        canvas.toBlob(
+                            resolve,
+                            mime,
+                            .92
+                        )
+                );
+
+
+            const extension =
+                type === "jpeg"
+                ? "jpg"
+                : "png";
+
+
+            zip.file(
+                `page-${String(pageNumber).padStart(3,"0")}.${extension}`,
+                blob
+            );
+
+
+            if(pageNumber <= 6){
+
+                const img =
+                    document.createElement(
+                        "img"
+                    );
+
+                img.src =
+                    URL.createObjectURL(
+                        blob
+                    );
+
+                $("imagePreview")
+                    .appendChild(img);
+
+            }
+
+        }
+
+
+        const zipBlob =
+            await zip.generateAsync({
+                type:"blob"
+            });
+
+
+        downloadBlob(
+            zipBlob,
+            `${safeName(file.name)}-images.zip`
+        );
+
+
+        setStatus(
+            "pdfImageStatus",
+            "Done. Images ZIP downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "pdfImageStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("pdfImageBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   PDF → IMAGES → PDF
+========================================================= */
+
+$("roundTripBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "roundTripFile",
+            "roundTripStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    $("roundTripBtn").disabled = true;
+
+
+    try{
+
+        const pdf =
+            await loadPDFJS(file);
+
+
+        const output =
+            await PDFDocument.create();
+
+
+        let scale =
+            parseFloat(
+                $("roundTripScale").value
+            );
+
+
+        if(
+            !Number.isFinite(scale) ||
+            scale < .7
+        ){
+
+            scale = 1.5;
+
+        }
+
+
+        scale =
+            Math.min(
+                scale,
+                3
+            );
+
+
+        const format =
+            $("roundTripFormat").value;
+
+
+        for(
+            let pageNumber=1;
+            pageNumber<=pdf.numPages;
+            pageNumber++
+        ){
+
+            setStatus(
+                "roundTripStatus",
+                `Converting page ${pageNumber} of ${pdf.numPages}...`
+            );
+
+
+            const page =
+                await pdf.getPage(
+                    pageNumber
+                );
+
+
+            const viewport =
+                page.getViewport({
+                    scale
+                });
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            canvas.width =
+                Math.ceil(
+                    viewport.width
+                );
+
+            canvas.height =
+                Math.ceil(
+                    viewport.height
+                );
+
+
+            const context =
+                canvas.getContext(
+                    "2d"
+                );
+
+
+            await page.render({
+                canvasContext:context,
+                viewport
+            }).promise;
+
+
+            const mime =
+                format === "jpeg"
+                ? "image/jpeg"
+                : "image/png";
+
+
+            const dataURL =
+                canvas.toDataURL(
+                    mime,
+                    .92
+                );
+
+
+            let embedded;
+
+
+            if(format === "jpeg"){
+
+                embedded =
+                    await output.embedJpg(
+                        dataURL
+                    );
+
+            }else{
+
+                embedded =
+                    await output.embedPng(
+                        dataURL
+                    );
+
+            }
+
+
+            const newPage =
+                output.addPage([
+                    viewport.width,
+                    viewport.height
+                ]);
+
+
+            newPage.drawImage(
+                embedded,
+                {
+                    x:0,
+                    y:0,
+                    width:viewport.width,
+                    height:viewport.height
+                }
+            );
+
+        }
+
+
+        const bytes =
+            await output.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            `${safeName(file.name)}-images-to-pdf.pdf`
+        );
+
+
+        setStatus(
+            "roundTripStatus",
+            "Done. New PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "roundTripStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("roundTripBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   EXTRACT PDF TEXT
+========================================================= */
+
+async function extractPDFText(
+    file,
+    statusId,
+    useOCR=false,
+    language="eng"
+){
+
+    const pdf =
+        await loadPDFJS(file);
+
+
+    const pages = [];
+
+
+    let worker = null;
+
+
+    try{
+
+        if(useOCR){
+
+            if(
+                typeof Tesseract ===
+                "undefined"
+            ){
+
+                throw new Error(
+                    "OCR library could not be loaded."
+                );
+
+            }
+
+
+            setStatus(
+                statusId,
+                "Starting OCR..."
+            );
+
+
+            worker =
+                await Tesseract.createWorker(
+                    language
+                );
+
+        }
+
+
+        for(
+            let pageNumber=1;
+            pageNumber<=pdf.numPages;
+            pageNumber++
+        ){
+
+            setStatus(
+                statusId,
+                `Processing page ${pageNumber} of ${pdf.numPages}...`
+            );
+
+
+            const page =
+                await pdf.getPage(
+                    pageNumber
+                );
+
+
+            const content =
+                await page.getTextContent();
+
+
+            let text =
+                content.items
+                .map(
+                    item => item.str
+                )
+                .join(" ")
+                .replace(/[ \t]+/g," ")
+                .trim();
+
+
+            if(
+                useOCR &&
+                text.length < 3
+            ){
+
+                const viewport =
+                    page.getViewport({
+                        scale:2
+                    });
+
+
+                const canvas =
+                    document.createElement(
+                        "canvas"
+                    );
+
+
+                canvas.width =
+                    Math.ceil(
+                        viewport.width
+                    );
+
+                canvas.height =
+                    Math.ceil(
+                        viewport.height
+                    );
+
+
+                const context =
+                    canvas.getContext(
+                        "2d"
+                    );
+
+
+                await page.render({
+                    canvasContext:context,
+                    viewport
+                }).promise;
+
+
+                const result =
+                    await worker.recognize(
+                        canvas
+                    );
+
+
+                text =
+                    result.data.text
+                    .trim();
+
+            }
+
+
+            pages.push(
+                `===== PAGE ${pageNumber} =====\n${text || "[No text found]"}`
+            );
+
+        }
+
+
+    }finally{
+
+        if(worker){
+
+            try{
+
+                await worker.terminate();
+
+            }catch(e){
+
+                console.warn(
+                    "OCR worker termination:",
+                    e
+                );
+
+            }
+
+        }
+
+    }
+
+
+    return pages.join("\n\n");
+
+}
+
+
+/* =========================================================
+   PDF → TEXT
+========================================================= */
+
+$("textBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "textFile",
+            "textStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    $("textBtn").disabled = true;
+
+
+    try{
+
+        const text =
+            await extractPDFText(
+                file,
+                "textStatus",
+                false
+            );
+
+
+        downloadBlob(
+            new Blob(
+                [text],
+                {
+                    type:
+                    "text/plain;charset=utf-8"
+                }
+            ),
+            `${safeName(file.name)}.txt`
+        );
+
+
+        setStatus(
+            "textStatus",
+            "Done. Text file downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "textStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("textBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   PDF → WORD
+========================================================= */
+
+$("wordBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "wordFile",
+            "wordStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    $("wordBtn").disabled = true;
+
+
+    try{
+
+        const useOCR =
+            $("wordOCR").checked;
+
+
+        const language =
+            $("ocrLanguage").value;
+
+
+        const text =
+            await extractPDFText(
+                file,
+                "wordStatus",
+                useOCR,
+                language
+            );
+
+
+        if(
+            typeof docx ===
+            "undefined"
+        ){
+
+            throw new Error(
+                "DOCX library could not be loaded."
+            );
+
+        }
+
+
+        const paragraphs = [];
+
+
+        const pageParts =
+            text.split(
+                /===== PAGE (\d+) =====/g
+            );
+
+
+        for(
+            let i=1;
+            i<pageParts.length;
+            i+=2
+        ){
+
+            const pageNumber =
+                pageParts[i];
+
+
+            const pageText =
+                pageParts[i+1] || "";
+
+
+            paragraphs.push(
+                new docx.Paragraph({
+                    children:[
+                        new docx.TextRun({
+                            text:
+                            `Page ${pageNumber}`,
+                            bold:true,
+                            size:26
+                        })
+                    ]
+                })
+            );
+
+
+            pageText
+            .split(/\n+/)
+            .forEach(line => {
+
+                const clean =
+                    line.trim();
+
+                if(clean){
+
+                    paragraphs.push(
+                        new docx.Paragraph({
+                            children:[
+                                new docx.TextRun({
+                                    text:clean
+                                })
+                            ]
+                        })
+                    );
+
+                }
+
+            });
+
+
+            paragraphs.push(
+                new docx.Paragraph({
+                    children:[
+                        new docx.TextRun({
+                            text:""
+                        })
+                    ]
+                })
+            );
+
+        }
+
+
+        const documentFile =
+            new docx.Document({
+
+                sections:[
+                    {
+                        children:
+                        paragraphs
+                    }
+                ]
+
+            });
+
+
+        const blob =
+            await docx.Packer.toBlob(
+                documentFile
+            );
+
+
+        downloadBlob(
+            blob,
+            `${safeName(file.name)}.docx`
+        );
+
+
+        setStatus(
+            "wordStatus",
+            "Done. Word file downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "wordStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("wordBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   PDF → EXCEL
+========================================================= */
+
+$("excelBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "excelFile",
+            "excelStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    $("excelBtn").disabled = true;
+
+
+    try{
+
+        const pdf =
+            await loadPDFJS(file);
+
+
+        const rows =
+            [
+                ["Page","Text"]
+            ];
+
+
+        for(
+            let pageNumber=1;
+            pageNumber<=pdf.numPages;
+            pageNumber++
+        ){
+
+            setStatus(
+                "excelStatus",
+                `Processing page ${pageNumber} of ${pdf.numPages}...`
+            );
+
+
+            const page =
+                await pdf.getPage(
+                    pageNumber
+                );
+
+
+            const content =
+                await page.getTextContent();
+
+
+            const items =
+                content.items
+                .filter(
+                    item =>
+                    item.str.trim()
+                )
+                .sort(
+                    (a,b) =>
+                    b.transform[5]
+                    -
+                    a.transform[5]
+                    ||
+                    a.transform[4]
+                    -
+                    b.transform[4]
+                );
+
+
+            let line = "";
+
+            let lastY = null;
+
+
+            for(
+                const item of items
+            ){
+
+                const y =
+                    item.transform[5];
+
+
+                if(
+                    lastY !== null &&
+                    Math.abs(y-lastY) > 5
+                ){
+
+                    if(line.trim()){
+
+                        rows.push([
+                            pageNumber,
+                            line.trim()
+                        ]);
+
+                    }
+
+
+                    line = "";
+
+                }
+
+
+                line +=
+                    (line ? " " : "")
+                    +
+                    item.str;
+
+
+                lastY = y;
+
+            }
+
+
+            if(line.trim()){
+
+                rows.push([
+                    pageNumber,
+                    line.trim()
+                ]);
+
+            }
+
+        }
+
+
+        const worksheet =
+            XLSX.utils.aoa_to_sheet(
+                rows
+            );
+
+
+        worksheet["!cols"] =
+            [
+                {wch:10},
+                {wch:100}
+            ];
+
+
+        const workbook =
+            XLSX.utils.book_new();
+
+
+        XLSX.utils.book_append_sheet(
+            workbook,
+            worksheet,
+            "PDF Data"
+        );
+
+
+        XLSX.writeFile(
+            workbook,
+            `${safeName(file.name)}.xlsx`
+        );
+
+
+        setStatus(
+            "excelStatus",
+            "Done. Excel file downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "excelStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("excelBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   ROTATE PDF
+========================================================= */
+
+$("rotateBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "rotateFile",
+            "rotateStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    $("rotateBtn").disabled = true;
+
+
+    try{
+
+        const pdf =
+            await loadPDFLib(file);
+
+
+        const angle =
+            parseInt(
+                $("rotateAngle").value,
+                10
+            );
+
+
+        pdf.getPages()
+        .forEach(page => {
+
+            const current =
+                page.getRotation().angle;
+
+
+            page.setRotation(
+                degrees(
+                    current + angle
+                )
+            );
+
+        });
+
+
+        const bytes =
+            await pdf.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            `${safeName(file.name)}-rotated.pdf`
+        );
+
+
+        setStatus(
+            "rotateStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "rotateStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("rotateBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   DELETE PAGES
+========================================================= */
+
+$("deleteBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "deleteFile",
+            "deleteStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    const requested =
+        parsePages(
+            $("deletePages").value
+        );
+
+
+    if(!requested.length){
+
+        setStatus(
+            "deleteStatus",
+            "Please enter pages to delete.",
+            "err"
+        );
+
+        return;
+
+    }
+
+
+    $("deleteBtn").disabled = true;
+
+
+    try{
+
+        const source =
+            await loadPDFLib(file);
+
+
+        const total =
+            source.getPageCount();
+
+
+        const deletePages =
+            requested.filter(
+                page =>
+                page >= 1 &&
+                page <= total
+            );
+
+
+        if(!deletePages.length){
+
+            setStatus(
+                "deleteStatus",
+                `Use page numbers from 1 to ${total}.`,
+                "err"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            deletePages.length >= total
+        ){
+
+            setStatus(
+                "deleteStatus",
+                "At least one page must remain.",
+                "err"
+            );
+
+            return;
+
+        }
+
+
+        const deleteSet =
+            new Set(
+                deletePages.map(
+                    page => page-1
+                )
+            );
+
+
+        const keep =
+            Array.from(
+                {length:total},
+                (_,i)=>i
+            )
+            .filter(
+                index =>
+                !deleteSet.has(index)
+            );
+
+
+        const output =
+            await PDFDocument.create();
+
+
+        const pages =
+            await output.copyPages(
+                source,
+                keep
+            );
+
+
+        pages.forEach(
+            page => output.addPage(page)
+        );
+
+
+        const bytes =
+            await output.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            `${safeName(file.name)}-deleted.pdf`
+        );
+
+
+        setStatus(
+            "deleteStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "deleteStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("deleteBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   REORDER PDF
+========================================================= */
+
+$("orderBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "orderFile",
+            "orderStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    const order =
+        parsePages(
+            $("pageOrder").value
+        );
+
+
+    if(!order.length){
+
+        setStatus(
+            "orderStatus",
+            "Please enter page order.",
+            "err"
+        );
+
+        return;
+
+    }
+
+
+    $("orderBtn").disabled = true;
+
+
+    try{
+
+        const source =
+            await loadPDFLib(file);
+
+
+        const total =
+            source.getPageCount();
+
+
+        if(
+            order.some(
+                page =>
+                page < 1 ||
+                page > total
+            )
+        ){
+
+            setStatus(
+                "orderStatus",
+                `Use page numbers from 1 to ${total}.`,
+                "err"
+            );
+
+            return;
+
+        }
+
+
+        const output =
+            await PDFDocument.create();
+
+
+        const pages =
+            await output.copyPages(
+                source,
+                order.map(
+                    page => page-1
+                )
+            );
+
+
+        pages.forEach(
+            page => output.addPage(page)
+        );
+
+
+        const bytes =
+            await output.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            `${safeName(file.name)}-reordered.pdf`
+        );
+
+
+        setStatus(
+            "orderStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "orderStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("orderBtn").disabled = false;
+
+    }
+
+};
+
+
+/* =========================================================
+   WATERMARK PDF
+========================================================= */
+
+$("watermarkBtn").onclick =
+async function(){
+
+    const file =
+        getFile(
+            "watermarkFile",
+            "watermarkStatus"
+        );
+
+    if(!file){
+        return;
+    }
+
+
+    const text =
+        $("watermarkText")
+        .value
+        .trim();
+
+
+    if(!text){
+
+        setStatus(
+            "watermarkStatus",
+            "Please enter watermark text.",
+            "err"
+        );
+
+        return;
+
+    }
+
+
+    $("watermarkBtn").disabled = true;
+
+
+    try{
+
+        const pdf =
+            await loadPDFLib(file);
+
+
+        const font =
+            await pdf.embedFont(
+                StandardFonts.HelveticaBold
+            );
+
+
+        const size =
+            parseFloat(
+                $("watermarkSize").value
+            ) || 36;
+
+
+        const opacity =
+            parseFloat(
+                $("watermarkOpacity").value
+            ) || .25;
+
+
+        pdf.getPages()
+        .forEach(page => {
+
+            const width =
+                page.getWidth();
+
+
+            const height =
+                page.getHeight();
+
+
+            const textWidth =
+                font.widthOfTextAtSize(
+                    text,
+                    size
+                );
+
+
+            page.drawText(
+                text,
+                {
+                    x:
+                    (width-textWidth)/2,
+
+                    y:
+                    height/2,
+
+                    size,
+
+                    font,
+
+                    color:
+                    rgb(
+                        .45,
+                        .45,
+                        .45
+                    ),
+
+                    opacity,
+
+                    rotate:
+                    degrees(-35)
+                }
+            );
+
+        });
+
+
+        const bytes =
+            await pdf.save();
+
+
+        downloadBlob(
+            new Blob(
+                [bytes],
+                {type:"application/pdf"}
+            ),
+            `${safeName(file.name)}-watermarked.pdf`
+        );
+
+
+        setStatus(
+            "watermarkStatus",
+            "Done. PDF downloaded.",
+            "ok"
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        setStatus(
+            "watermarkStatus",
+            "Error: " + error.message,
+            "err"
+        );
+
+    }finally{
+
+        $("watermarkBtn").disabled = false;
+
+    }
+
+};
 
 </script>
 
